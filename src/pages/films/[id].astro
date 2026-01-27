@@ -4,7 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import placeholder from "../../assets/images/placeholder.png";
 import { getEntry } from "astro:content";
-import Links from "../../components/Links.astro";
+import LinkPersonne from "../../components/LinkPersonne.astro";
 
 export async function getStaticPaths() {
   const films = await getCollection("films");
@@ -32,7 +32,27 @@ const { Content } = await render(film);
       film.data.realisateur && (
         <p>
           Réalisateur :{" "}
-          <Links personne={await getEntry(film.data.realisateur)} />
+          <LinkPersonne personne={await getEntry(film.data.realisateur)} />
+        </p>
+      )
+    }
+    {
+      film.data.producteurs && (
+        <p>
+          Producteur{film.data.producteurs.length > 1 ? "s" : ""} :{" "}
+          {await Promise.all(
+            film.data.producteurs.map((producteur) => getEntry(producteur)),
+          ).then((producteurs) => (
+            <>
+              {producteurs.map((producteur, index) => (
+                <span>
+                  {index > 0 && index === producteurs.length - 1 && " et "}
+                  {index > 0 && index < producteurs.length - 1 && ", "}
+                  <LinkPersonne personne={producteur} />
+                </span>
+              ))}
+            </>
+          ))}
         </p>
       )
     }

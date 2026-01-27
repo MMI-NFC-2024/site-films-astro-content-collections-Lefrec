@@ -5,7 +5,7 @@ image: ../../assets/images/bruges.jpg
 genres: ["action", "romance"]
 pays_origine: ["US"]
 realisateur: nolan
-producteurs: [nolan, dicaprio]
+producteurs: [nolan, dicaprio, bruce]
 ---
 
 Inception est un film de science-fiction sophistiqué réalisé par Christopher Nolan qui explore les mondes des rêves et de la conscience avec une complexité narrative remarquable.
