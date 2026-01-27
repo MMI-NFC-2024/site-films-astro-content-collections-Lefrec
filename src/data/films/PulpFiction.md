@@ -3,6 +3,8 @@ titre: Pulp Fiction
 sortie: 1994-10-14
 genres: ["action", "policier"]
 pays_origine: ["US"]
+realisateur: tarantino
+producteurs: [tarantino]
 ---
 
 Pulp Fiction est un chef-d'œuvre de Quentin Tarantino qui a révolutionné la structure narrative du cinéma moderne avec son approche non-linéaire.

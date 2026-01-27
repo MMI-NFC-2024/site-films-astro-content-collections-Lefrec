@@ -4,6 +4,8 @@ sortie: 1993-06-11
 image: ../../assets/images/Rectangle 8.png
 genres: ["action"]
 pays_origine: ["US"]
+realisateur: spielberg
+producteurs: [spielberg]
 ---
 
 Jurassic Park est une révolution dans le cinéma d'aventure et de science-fiction, réalisée par Steven Spielberg, marquée par des effets spéciaux révolutionnaires.

@@ -3,6 +3,8 @@ import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import placeholder from "../../assets/images/placeholder.png";
+import { getEntry } from "astro:content";
+import Links from "../../components/Links.astro";
 
 export async function getStaticPaths() {
   const films = await getCollection("films");
@@ -24,6 +26,14 @@ const { Content } = await render(film);
     {
       film.data.pays_origine && (
         <p>Pays d'origine : {film.data.pays_origine.join(", ")}</p>
+      )
+    }
+    {
+      film.data.realisateur && (
+        <p>
+          Réalisateur :{" "}
+          <Links personne={await getEntry(film.data.realisateur)} />
+        </p>
       )
     }
     <Image

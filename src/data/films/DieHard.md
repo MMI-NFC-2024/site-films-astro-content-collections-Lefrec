@@ -4,6 +4,8 @@ sortie: 1988-07-15
 image: ../../assets/images/Rectangle 10.png
 genres: ["action"]
 pays_origine: ["US"]
+realisateur: spielberg
+producteurs: [spielberg]
 ---
 
 Die Hard est un film d'action révolutionnaire réalisé par John McTiernan, qui a redéfini le genre de l'action cinématographique.

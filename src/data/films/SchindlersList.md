@@ -4,6 +4,8 @@ sortie: 1993-11-30
 image: ../../assets/images/affronte.jpg
 genres: ["policier"]
 pays_origine: ["US"]
+realisateur: spielberg
+producteurs: [spielberg]
 ---
 
 Schindler's List est un drame historique puissant réalisé par Steven Spielberg qui raconte l'histoire vraie d'un homme qui a sauvé plus d'un millier de vies pendant l'Holocauste.
