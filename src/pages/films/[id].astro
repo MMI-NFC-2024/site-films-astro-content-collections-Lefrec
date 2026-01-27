@@ -1,0 +1,31 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+  const films = await getCollection("films");
+  return films.map((film) => ({
+    params: { id: film.id },
+    props: { film },
+  }));
+}
+
+const { film } = Astro.props;
+const { Content } = await render(film);
+---
+
+<Layout title={film.data.titre}>
+  <div class="prose">
+    <h1>{film.data.titre}</h1>
+    <p>Sortie : {film.data.sortie.getFullYear()}</p>
+    {film.data.genres && <p>Genres : {film.data.genres.join(", ")}</p>}
+    {
+      film.data.pays_origine && (
+        <p>Pays d'origine : {film.data.pays_origine.join(", ")}</p>
+      )
+    }
+    {film.data.image && <Image src={film.data.image} alt={film.data.titre} />}
+    <Content />
+  </div>
+</Layout>

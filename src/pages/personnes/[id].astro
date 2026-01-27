@@ -1,0 +1,63 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import {
+  calculateAge,
+  formatDate,
+  getRegionName,
+  joinWithAnd,
+} from "../../helper";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+  const personnes = await getCollection("personnes");
+  return personnes.map((personne) => ({
+    params: { id: personne.id },
+    props: { personne },
+  }));
+}
+
+const { personne } = Astro.props;
+const { Content } = await render(personne);
+---
+
+<Layout title={personne.data.nom}>
+  <div class="prose">
+    <h1>{personne.data.nom}</h1>
+    <p>
+      Né le {formatDate(personne.data.naissance)}
+      {
+        !personne.data.décès && (
+          <span>âge : {calculateAge(personne.data.naissance)}</span>
+        )
+      }
+    </p>
+    {
+      personne.data.décès && (
+        <p>
+          Décédé le {formatDate(personne.data.décès)} à l'âge fatidique de
+          {calculateAge(personne.data.naissance, personne.data.décès)} ans.
+        </p>
+      )
+    }
+    {
+      personne.data.professions && (
+        <p>
+          Profession{personne.data.professions.length > 1 ? "s" : ""} :{" "}
+          {joinWithAnd(personne.data.professions)}
+        </p>
+      )
+    }
+    {
+      personne.data.lieu_naissance && (
+        <p>Lieu de naissance : {getRegionName(personne.data.lieu_naissance)}</p>
+      )
+    }
+    {
+      personne.data.image && (
+        <Image src={personne.data.image} alt={personne.data.nom} />
+      )
+    }
+    <Content />
+  </div>
+</Layout>
