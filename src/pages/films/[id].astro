@@ -5,6 +5,7 @@ import { Image } from "astro:assets";
 import placeholder from "../../assets/images/placeholder.png";
 import { getEntry } from "astro:content";
 import LinkPersonne from "../../components/LinkPersonne.astro";
+import { getRegionName, joinWithAnd } from "../../helper";
 
 export async function getStaticPaths() {
   const films = await getCollection("films");
@@ -22,10 +23,22 @@ const { Content } = await render(film);
   <div class="max-w-4xl mx-auto p-8">
     <h1 class="text-4xl font-bold mb-4">{film.data.titre}</h1>
     <p>Sortie : {film.data.sortie.getFullYear()}</p>
-    {film.data.genres && <p>Genres : {film.data.genres.join(", ")}</p>}
+    {
+      film.data.genres && (
+        <p>
+          Genre{film.data.genres.length > 1 ? "s" : ""} :{" "}
+          {joinWithAnd(film.data.genres)}
+        </p>
+      )
+    }
     {
       film.data.pays_origine && (
-        <p>Pays d'origine : {film.data.pays_origine.join(", ")}</p>
+        <p>
+          Pays d'origine :{" "}
+          {joinWithAnd(
+            film.data.pays_origine.map((pays) => getRegionName(pays)),
+          )}
+        </p>
       )
     }
     {
@@ -39,7 +52,7 @@ const { Content } = await render(film);
     {
       film.data.producteurs && (
         <p>
-          Producteur{film.data.producteurs.length > 1 ? "s" : ""} :{" "}
+          Producteur{film.data.producteurs.length > 1 ? "s" : ""} :
           {await Promise.all(
             film.data.producteurs.map((producteur) => getEntry(producteur)),
           ).then((producteurs) => (
@@ -56,6 +69,7 @@ const { Content } = await render(film);
         </p>
       )
     }
+    {film.data.roles && <p>Acteur{film.data.roles.length > 1 ? "s" : ""} :</p>}
     <Image
       src={film.data.image ?? placeholder}
       alt={film.data.titre}

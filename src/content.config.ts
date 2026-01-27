@@ -21,7 +21,11 @@ const films = defineCollection({
         genres: z.array(z.enum(["action","romance","policier"])).optional(),
         pays_origine: z.array(z.string().min(2)).optional(),
         realisateur: reference("personnes").optional(),
-        producteurs: z.array(reference("personnes")).optional()
+        producteurs: z.array(reference("personnes")).optional(),
+        roles: z.array(z.object({
+            acteur: reference("personnes"),
+            nom_role: z.string(),
+        })).optional()
     })
 })
 

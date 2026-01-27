@@ -8,4 +8,4 @@ interface Props {
 const { personne } = Astro.props;
 ---
 
-<a href={`/personnes/${personne.id}`}>{personne.data.nom}</a>
+<a class="hover:underline" href={`/personnes/${personne.id}`}>{personne.data.nom}</a>
