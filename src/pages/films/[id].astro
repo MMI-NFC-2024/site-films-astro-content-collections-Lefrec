@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import { Image } from "astro:assets";
+import placeholder from "../../assets/images/placeholder.png";
 
 export async function getStaticPaths() {
   const films = await getCollection("films");
@@ -16,8 +17,8 @@ const { Content } = await render(film);
 ---
 
 <Layout title={film.data.titre}>
-  <div class="prose">
-    <h1>{film.data.titre}</h1>
+  <div class="max-w-4xl mx-auto p-8">
+    <h1 class="text-4xl font-bold mb-4">{film.data.titre}</h1>
     <p>Sortie : {film.data.sortie.getFullYear()}</p>
     {film.data.genres && <p>Genres : {film.data.genres.join(", ")}</p>}
     {
@@ -25,7 +26,13 @@ const { Content } = await render(film);
         <p>Pays d'origine : {film.data.pays_origine.join(", ")}</p>
       )
     }
-    {film.data.image && <Image src={film.data.image} alt={film.data.titre} />}
-    <Content />
+    <Image
+      src={film.data.image ?? placeholder}
+      alt={film.data.titre}
+      class="my-6"
+    />
+    <div class="prose max-w-none">
+      <Content />
+    </div>
   </div>
 </Layout>

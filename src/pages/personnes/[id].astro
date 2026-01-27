@@ -22,8 +22,8 @@ const { Content } = await render(personne);
 ---
 
 <Layout title={personne.data.nom}>
-  <div class="prose">
-    <h1>{personne.data.nom}</h1>
+  <div class="max-w-4xl mx-auto p-8">
+    <h1 class="text-4xl font-bold mb-4">{personne.data.nom}</h1>
     <p>
       Né le {formatDate(personne.data.naissance)}
       {
@@ -55,9 +55,11 @@ const { Content } = await render(personne);
     }
     {
       personne.data.image && (
-        <Image src={personne.data.image} alt={personne.data.nom} />
+        <Image src={personne.data.image} alt={personne.data.nom} class="my-6" />
       )
     }
-    <Content />
+    <div class="prose max-w-none">
+      <Content />
+    </div>
   </div>
 </Layout>

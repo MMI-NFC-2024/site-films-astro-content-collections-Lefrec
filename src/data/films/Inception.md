@@ -2,7 +2,7 @@
 titre: Inception
 sortie: 2010-07-16
 image: ../../assets/images/bruges.jpg
-genres: ["action"]
+genres: ["action", "romance"]
 pays_origine: ["US"]
 ---
 

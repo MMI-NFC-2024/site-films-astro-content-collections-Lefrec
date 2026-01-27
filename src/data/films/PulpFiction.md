@@ -1,8 +1,7 @@
 ---
 titre: Pulp Fiction
 sortie: 1994-10-14
-image: ../../assets/images/Rectangle 9.png
-genres: ["action"]
+genres: ["action", "policier"]
 pays_origine: ["US"]
 ---
 
