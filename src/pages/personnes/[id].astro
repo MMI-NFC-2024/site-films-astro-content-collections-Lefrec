@@ -26,7 +26,13 @@ const filmRealisateur = await getCollection("films", function (film) {
   return film.data.realisateur?.id === personne.id;
 });
 
-console.log(filmRealisateur)
+const filmProducteur = await getCollection("films", function (film) {
+  return film.data.producteurs?.some((p) => p.id == personne.id);
+});
+
+const filmRole = await getCollection("films", function (film) {
+  return film.data.roles?.some((p) => p.acteur.id == personne.id);
+});
 ---
 
 <Layout title={personne.data.nom}>
@@ -74,8 +80,22 @@ console.log(filmRealisateur)
     <!-- Films réalisés -->
     {
       filmRealisateur.length > 0 && (
-        <p>Films réalisés :</p>
+        <h3>Films réalisés :</h3>
         <ListeFilms films={filmRealisateur}/>
+      )
+    }
+    <!-- Films produits -->
+    {
+      filmProducteur.length > 0 && (
+        <h3>Films produits :</h3>
+        <ListeFilms films={filmProducteur}/>
+      )
+    }
+      <!-- Films joués -->
+    {
+      filmRole.length > 0 && (
+        <h3>À joué dans :</h3>
+        <ListeFilms films={filmRole}/>
       )
     }
     <!-- Contenu MarkDown -->
