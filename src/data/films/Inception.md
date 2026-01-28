@@ -6,7 +6,7 @@ genres: ["action", "romance"]
 pays_origine: [US, FR, GB]
 realisateur: nolan
 producteurs: [nolan, dicaprio, bruce]
-roles: [{ dicaprio, le gros BG }, { bruce, le moins BG }]
+roles: [{ acteur: dicaprio, nom_role: le gros BG }, { acteur: bruce, nom_role: le moins BG }]
 ---
 
 Inception est un film de science-fiction sophistiqué réalisé par Christopher Nolan qui explore les mondes des rêves et de la conscience avec une complexité narrative remarquable.

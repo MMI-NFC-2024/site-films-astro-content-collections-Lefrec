@@ -69,7 +69,32 @@ const { Content } = await render(film);
         </p>
       )
     }
-    {film.data.roles && <p>Acteur{film.data.roles.length > 1 ? "s" : ""} :</p>}
+    {
+      film.data.roles && (
+        <p>
+          Acteur{film.data.roles.length > 1 ? "s" : ""} :
+        </p>
+        <ul>
+          {await Promise.all(
+            film.data.roles.map(async (role) => ({
+              acteur: await getEntry(role.acteur),
+              nom_role: role.nom_role,
+            })),
+          ).then((roles) => (
+            <>
+              {roles.map((role, index) => (
+                <li>
+                  <LinkPersonne personne={role.acteur} />
+                  <span class="text-slate-600">
+                    - {role.nom_role}
+                  </span>
+                </li>
+              ))}
+            </>
+          ))}
+        </ul>
+      )
+    }
     <Image
       src={film.data.image ?? placeholder}
       alt={film.data.titre}
