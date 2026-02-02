@@ -22,84 +22,80 @@ const { Content } = await render(film);
 <Layout title={film.data.titre}>
   <div class="max-w-4xl mx-auto p-8">
     <h1 class="text-4xl font-bold mb-4">{film.data.titre}</h1>
-    <p>Sortie : {film.data.sortie.getFullYear()}</p>
-    {
-      film.data.genres && (
-        <p>
-          Genre{film.data.genres.length > 1 ? "s" : ""} :{" "}
-          {joinWithAnd(film.data.genres)}
-        </p>
-      )
-    }
-    {
-      film.data.pays_origine && (
-        <p>
-          Pays d'origine :{" "}
-          {joinWithAnd(
-            film.data.pays_origine.map((pays) => getRegionName(pays)),
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start mb-6">
+      <div class="md:col-span-2 bg-slate-50 p-4 rounded">
+        <dl class="space-y-2 text-sm">
+          <div>
+            <dt class="font-semibold text-slate-700">Sortie</dt>
+            <dd class="text-slate-900">{film.data.sortie.getFullYear()}</dd>
+          </div>
+
+          {film.data.genres && (
+            <div>
+              <dt class="font-semibold text-slate-700">Genre{film.data.genres.length > 1 ? 's' : ''}</dt>
+              <dd class="text-slate-900">{joinWithAnd(film.data.genres)}</dd>
+            </div>
           )}
-        </p>
-      )
-    }
-    {
-      film.data.realisateur && (
-        <p>
-          Réalisateur :{" "}
-          <LinkPersonne personne={await getEntry(film.data.realisateur)} />
-        </p>
-      )
-    }
-    {
-      film.data.producteurs && (
-        <p>
-          Producteur{film.data.producteurs.length > 1 ? "s" : ""} :
-          {await Promise.all(
-            film.data.producteurs.map((producteur) => getEntry(producteur)),
-          ).then((producteurs) => (
-            <>
-              {producteurs.map((producteur, index) => (
-                <span>
-                  {index > 0 && index === producteurs.length - 1 && " et "}
-                  {index > 0 && index < producteurs.length - 1 && ", "}
-                  <LinkPersonne personne={producteur} />
-                </span>
-              ))}
-            </>
-          ))}
-        </p>
-      )
-    }
-    {
-      film.data.roles && (
-        <p>
-          Acteur{film.data.roles.length > 1 ? "s" : ""} :
-        </p>
-        <ul>
-          {await Promise.all(
-            film.data.roles.map(async (role) => ({
-              acteur: await getEntry(role.acteur),
-              nom_role: role.nom_role,
-            })),
-          ).then((roles) => (
-            <>
-              {roles.map((role, index) => (
-                <li>
-                  <LinkPersonne personne={role.acteur} />
-                  <span class="text-slate-600">
-                    - {role.nom_role}
-                  </span>
-                </li>
-              ))}
-            </>
-          ))}
-        </ul>
-      )
-    }
-    <Image
-      src={film.data.image ?? placeholder}
-      alt={film.data.titre}
-      class="my-6"
-    />
+
+          {film.data.pays_origine && (
+            <div>
+              <dt class="font-semibold text-slate-700">Pays d'origine</dt>
+              <dd class="text-slate-900">{joinWithAnd(film.data.pays_origine.map((pays) => getRegionName(pays)))}</dd>
+            </div>
+          )}
+
+          {film.data.realisateur && (
+            <div>
+              <dt class="font-semibold text-slate-700">Réalisateur</dt>
+              <dd class="text-slate-900"><LinkPersonne personne={await getEntry(film.data.realisateur)} /></dd>
+            </div>
+          )}
+
+          {film.data.producteurs && (
+            <div>
+              <dt class="font-semibold text-slate-700">Producteur{film.data.producteurs.length > 1 ? 's' : ''}</dt>
+              <dd class="text-slate-900">
+                {await Promise.all(film.data.producteurs.map((producteur) => getEntry(producteur))).then((producteurs) => (
+                  <>
+                    {producteurs.map((producteur, index) => (
+                      <span>
+                        {index > 0 && index === producteurs.length - 1 && " et "}
+                        {index > 0 && index < producteurs.length - 1 && ", "}
+                        <LinkPersonne personne={producteur} />
+                      </span>
+                    ))}
+                  </>
+                ))}
+              </dd>
+            </div>
+          )}
+
+          {film.data.roles && (
+            <div>
+              <dt class="font-semibold text-slate-700">Acteur{film.data.roles.length > 1 ? 's' : ''}</dt>
+              <dd class="text-slate-900">
+                <ul class="list-disc ml-5">
+                  {await Promise.all(film.data.roles.map(async (role)=> ({acteur: await getEntry(role.acteur), nom_role: role.nom_role}))).then((roles) => (
+                    <>
+                      {roles.map((role, index) => (
+                        <li>
+                          <LinkPersonne personne={role.acteur} />
+                          <span class="text-slate-600"> - {role.nom_role}</span>
+                        </li>
+                      ))}
+                    </>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          )}
+        </dl>
+      </div>
+
+      <div class="md:col-span-1">
+        <Image src={film.data.image ?? placeholder} alt={film.data.titre} class="rounded shadow-sm w-full h-auto object-cover" />
+      </div>
+    </div>
     <div class="prose max-w-none">
       <Content />
     </div>

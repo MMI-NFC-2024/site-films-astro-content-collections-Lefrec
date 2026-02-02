@@ -36,73 +36,95 @@ const filmRole = await getCollection("films", (film) => film.data.roles?.some((p
 <Layout title={personne.data.nom}>
   <div class="max-w-4xl mx-auto p-8">
     <h1 class="text-4xl font-bold mb-4">{personne.data.nom}</h1>
-    <!-- Date de naissance -->
-    <p>
-      Né le {formatDate(personne.data.naissance)}
-      {
-        !personne.data.décès && (
-          <span>âge : {calculateAge(personne.data.naissance)}</span>
-        )
-      }
-    </p>
-    <!-- Date de décès optionnelle -->
-    {
-      personne.data.décès && (
-        <p>
-          Décédé le {formatDate(personne.data.décès)} à l'âge fatidique de
-          {calculateAge(personne.data.naissance, personne.data.décès)} ans.
-        </p>
-      )
-    }
-    <!-- Professions -->
-    {
-      personne.data.professions && (
-        <p>
-          Profession{personne.data.professions.length > 1 ? "s" : ""} :{" "}
-          {joinWithAnd(personne.data.professions)}
-        </p>
-      )
-    }
-    <!-- Lieu de naissance -->
-    {
-      personne.data.lieu_naissance && (
-        <p>Lieu de naissance : {getRegionName(personne.data.lieu_naissance)}</p>
-      )
-    }
-    <!-- Image -->
-    {
-      personne.data.image && (
-        <Image src={personne.data.image} alt={personne.data.nom} class="my-6" />
-      )
-    }
-    <!-- Films réalisés -->
-    {
-      filmRealisateur.length > 0 && (
-        <h3>Films réalisés :</h3>
-        <ListeFilms films={filmRealisateur}/>
-      )
-    }
-    <!-- Films produits -->
-    {
-      filmProducteur.length > 0 && (
-        <h3>Films produits :</h3>
-        <ListeFilms films={filmProducteur}/>
-      )
-    }
-      <!-- Films joués -->
-    {
-      filmRole.length > 0 && (
-        filmRole.map((film) => (
-          <>
-            A joué le role de {
-              film.data.roles
-                ?.filter(role => role.acteur.id === personne.id)
-                .map((role)=>role.nom_role)
-              } dans {film.data.titre}
-          </>
-        ))
-      )
-    }
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start mb-6">
+      {personne.data.image && (
+        <div class="md:col-span-1">
+          <Image src={personne.data.image} alt={personne.data.nom} class="rounded shadow-sm w-full h-auto object-cover" />
+        </div>
+      )}
+
+      <div class="md:col-span-2 bg-slate-50 p-4 rounded">
+        <dl class="space-y-2 text-sm">
+          <div>
+            <dt class="font-semibold text-slate-700">Né</dt>
+            <dd class="text-slate-900">{formatDate(personne.data.naissance)}{!personne.data.décès && <span> · âge : {calculateAge(personne.data.naissance)}</span>}</dd>
+          </div>
+
+          {personne.data.décès && (
+            <div>
+              <dt class="font-semibold text-slate-700">Décédé</dt>
+              <dd class="text-slate-900">{formatDate(personne.data.décès)} · {calculateAge(personne.data.naissance, personne.data.décès)} ans</dd>
+            </div>
+          )}
+
+          {personne.data.professions && (
+            <div>
+              <dt class="font-semibold text-slate-700">Profession{personne.data.professions.length > 1 ? 's' : ''}</dt>
+              <dd class="text-slate-900">{joinWithAnd(personne.data.professions)}</dd>
+            </div>
+          )}
+
+          {personne.data.lieu_naissance && (
+            <div>
+              <dt class="font-semibold text-slate-700">Lieu de naissance</dt>
+              <dd class="text-slate-900">{getRegionName(personne.data.lieu_naissance)}</dd>
+            </div>
+          )}
+        </dl>
+      </div>
+    </div>
+    <!-- Films réalisés / produits / joués -->
+    <div class="space-y-6 mt-6">
+      {filmRealisateur.length > 0 && (
+        <section>
+          <h3 class="text-xl font-semibold mb-3">Films réalisés</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {filmRealisateur.map((film) => (
+              <article class="bg-white border rounded p-3 shadow-sm">
+                <LinkFilm film={film} />
+                {film.data.sortie && <div class="text-sm text-slate-600 mt-1">{film.data.sortie.getFullYear()}</div>}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {filmProducteur.length > 0 && (
+        <section>
+          <h3 class="text-xl font-semibold mb-3">Films produits</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {filmProducteur.map((film) => (
+              <article class="bg-white border rounded p-3 shadow-sm">
+                <LinkFilm film={film} />
+                {film.data.sortie && <div class="text-sm text-slate-600 mt-1">{film.data.sortie.getFullYear()}</div>}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {filmRole.length > 0 && (
+        <section>
+          <h3 class="text-xl font-semibold mb-3">Films joués</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {filmRole.map((film) => (
+              <article class="bg-white border rounded p-3 shadow-sm">
+                <div class="mb-1">
+                  <LinkFilm film={film} />
+                </div>
+                <ul class="text-sm text-slate-600 list-disc ml-5">
+                  {film.data.roles
+                    ?.filter((role) => role.acteur.id === personne.id)
+                    .map((role) => (
+                      <li>{role.nom_role}</li>
+                    ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
     <!-- Contenu MarkDown -->
     <div class="prose max-w-none">
       <Content />
