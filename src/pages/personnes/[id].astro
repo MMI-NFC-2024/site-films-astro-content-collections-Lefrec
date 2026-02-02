@@ -30,9 +30,7 @@ const filmProducteur = await getCollection("films", function (film) {
   return film.data.producteurs?.some((p) => p.id == personne.id);
 });
 
-const filmRole = await getCollection("films", function (film) {
-  return film.data.roles?.some((p) => p.acteur.id == personne.id);
-});
+const filmRole = await getCollection("films", (film) => film.data.roles?.some((p) => p.acteur.id === personne.id));
 ---
 
 <Layout title={personne.data.nom}>
@@ -94,8 +92,15 @@ const filmRole = await getCollection("films", function (film) {
       <!-- Films joués -->
     {
       filmRole.length > 0 && (
-        <h3>À joué dans :</h3>
-        <ListeFilms films={filmRole}/>
+        filmRole.map((film) => (
+          <>
+            A joué le role de {
+              film.data.roles
+                ?.filter(role => role.acteur.id === personne.id)
+                .map((role)=>role.nom_role)
+              } dans {film.data.titre}
+          </>
+        ))
       )
     }
     <!-- Contenu MarkDown -->
